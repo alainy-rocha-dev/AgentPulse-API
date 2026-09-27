@@ -30,7 +30,7 @@ flowchart TD
     end
     
     Worker -->|7. Persiste Estado & Resultado| Postgres[(PostgreSQL DB)]
-    Client -.->|8. GET /api/v1/tasks/{task_id}| API
+    Client -.->|"8. GET /api/v1/tasks/{task_id}"| API
     API -.->|9. Consulta Resultado| Postgres
 ```
 
