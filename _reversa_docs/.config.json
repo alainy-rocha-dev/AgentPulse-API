@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-27T12:06:00Z",
+  "reversa": {
+    "version": "1.0.0"
+  },
+  "projectName": "automacao_agentes",
+  "interview": {
+    "readerProfile": "novo_dev",
+    "depth": "full",
+    "visualStyle": "premium"
+  },
+  "seed": {
+    "hash": "sha256:7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+    "source": "project_name",
+    "explicitOverride": null
+  },
+  "knowledgeSources": {
+    "soul": false,
+    "chronicle": false,
+    "topology": false,
+    "sddSpecs": [
+      "001-api-gateway-task-management",
+      "002-ai-agent-orchestrator-validator",
+      "003-task-queue-broker",
+      "004-postgres-persistence-container"
+    ],
+    "sourceCode": true
+  },
+  "pagesPlanned": [
+    "arquitetura.html",
+    "modulos.html",
+    "metricas.html",
+    "glossario.html",
+    "features/001-api-gateway-task-management.html",
+    "features/002-ai-agent-orchestrator-validator.html",
+    "features/003-task-queue-broker.html",
+    "features/004-postgres-persistence-container.html",
+    "index.html"
+  ],
+  "pagesOmitted": []
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="reversa-category" content="feature">
+  <meta name="reversa-producer-agent" content="reversa-docs-storyteller">
+  <title>F003: Task Queue Broker - Reversa Docs</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <a href="../index.html" class="brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28"><rect width="64" height="64" rx="16" fill="#0f172a"/><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="none" stroke="#6366f1" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="#6366f1"/></svg>
+      <span>Reversa Docs</span>
+    </a>
+    <nav class="reversa-doc-nav">
+      <a href="../index.html">Visão Geral</a>
+      <a href="../arquitetura.html">Arquitetura 3D</a>
+      <a href="../modulos.html">Mapa de Módulos</a>
+      <a href="../metricas.html">Métricas & Cobertura</a>
+      <a href="../glossario.html">Glossário</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 style="font-size: 2.25rem; font-weight: 900; margin-bottom: 0.5rem;">Feature 003: Task Queue Broker (Celery + Redis)</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Infraestrutura de enfileiramento e consumo assíncrono em segundo plano com garantia de entrega e retries.</p>
+
+    <div class="card" style="margin-bottom: 2rem;">
+      <h3>Objetivo</h3>
+      <p>Gerenciar o enfileiramento de tarefas pesadas com Redis e Workers Celery, aplicando <code>task_acks_late=True</code> e retentativas síncronas resilientes com <code>tenacity</code>.</p>
+    </div>
+
+    <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Configurações do Celery Broker</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Parâmetro</th>
+            <th>Valor</th>
+            <th>Impacto / Motivação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>task_acks_late</code></td>
+            <td><code>True</code></td>
+            <td>A confirmação só ocorre após a conclusão da execução. Se o container cair no meio, a tarefa não é perdida.</td>
+          </tr>
+          <tr>
+            <td><code>task_time_limit</code></td>
+            <td><code>300s (5 min)</code></td>
+            <td>Previne tarefas presas indefinidamente interrompendo execuções com timeout.</td>
+          </tr>
+          <tr>
+            <td><code>result_backend</code></td>
+            <td><code>Redis / PostgreSQL</code></td>
+            <td>Armazena estados intermediários e resultados das tarefas.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+  <footer>
+    <p>Reversa Docs — Feature 003</p>
+  </footer>
+</body>
+</html>

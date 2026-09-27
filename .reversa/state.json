@@ -1,0 +1,49 @@
+{
+  "version": "1.3.4",
+  "project": "automacao_agentes",
+  "user_name": "Arocha",
+  "chat_language": "pt-br",
+  "doc_language": "Português",
+  "answer_mode": "chat",
+  "doc_level": "completo",
+  "output_folder": "_reversa_sdd",
+  "forward_folder": "_reversa_forward",
+  "phase": null,
+  "completed": [],
+  "pending": [
+    "reconhecimento",
+    "escavacao",
+    "interpretacao",
+    "geracao",
+    "revisao"
+  ],
+  "checkpoints": {},
+  "engines": [
+    "claude-code",
+    "opencode",
+    "hermes"
+  ],
+  "newproject_progress": {
+    "mode": "guiado",
+    "stage": "done",
+    "started_at": "2026-09-27T11:33:45-03:00",
+    "last_checkpoint_at": "2026-09-27T11:38:57-03:00",
+    "completed_stages": [
+      "ideator",
+      "researcher",
+      "drafter",
+      "spec-sdd"
+    ],
+    "brief": "Projeto 3: API de Automação de Agentes com Validação (Back-end). API assíncrona (FastAPI + Celery + Redis + PostgreSQL) para orquestração de agentes de IA."
+  },
+  "created_files": [
+    "_reversa_sdd\\newproject-brief.md",
+    "_reversa_sdd\\ideation.md",
+    "_reversa_sdd\\personas.md",
+    "_reversa_sdd\\prd.md",
+    "_reversa_sdd\\sdd\\api-gateway-task-management.md",
+    "_reversa_sdd\\sdd\\task-queue-broker.md",
+    "_reversa_sdd\\sdd\\ai-agent-orchestrator-validator.md",
+    "_reversa_sdd\\sdd\\postgres-persistence-container.md"
+  ]
+}

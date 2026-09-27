@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="reversa-category" content="modules">
+  <meta name="reversa-producer-agent" content="reversa-docs-mapper">
+  <title>Módulos do Sistema - API de Automação de Agentes</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/data.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <a href="index.html" class="brand">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="28" height="28"><rect width="64" height="64" rx="16" fill="#0f172a"/><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="none" stroke="#6366f1" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="#6366f1"/></svg>
+      <span>Reversa Docs</span>
+    </a>
+    <nav class="reversa-doc-nav">
+      <a href="index.html">Visão Geral</a>
+      <a href="arquitetura.html">Arquitetura 3D</a>
+      <a href="modulos.html" aria-current="page">Mapa de Módulos</a>
+      <a href="metricas.html">Métricas & Cobertura</a>
+      <a href="glossario.html">Glossário</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h1 style="font-size: 2.25rem; font-weight: 900; margin-bottom: 1rem;">Módulos de Código e Responsabilidades</h1>
+    <p style="color: var(--text-muted); margin-bottom: 2rem;">Inventário detalhado dos principais arquivos Python e artefatos de infraestrutura da solução.</p>
+
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Módulo / Arquivo</th>
+            <th>Camada</th>
+            <th>Descrição e Responsabilidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>app/main.py</code></td>
+            <td>API Gateway</td>
+            <td>Aplicação principal FastAPI, configuração de CORS, rotas <code>/api/v1</code> e middleware de validação de tamanho máximo de payload (10 MB).</td>
+          </tr>
+          <tr>
+            <td><code>app/api/v1/endpoints/tasks.py</code></td>
+            <td>Controllers</td>
+            <td>Endpoints HTTP. <code>POST /tasks</code> valida o payload e enfileira no Celery. <code>GET /tasks/{task_id}</code> consulta o estado e resultado.</td>
+          </tr>
+          <tr>
+            <td><code>app/services/repair_loop.py</code></td>
+            <td>AI Engine</td>
+            <td>Serviço responsável por validar saídas estruturadas com Pydantic e re-executar prompts com os erros de sintaxe encontrados (Loop de Reparo Anti-alucinação).</td>
+          </tr>
+          <tr>
+            <td><code>app/worker.py</code></td>
+            <td>Background Worker</td>
+            <td>Processamento em segundo plano via Celery. Gerencia a transição de status (<code>queued</code> → <code>running</code> → <code>completed</code> / <code>failed</code>) com retries.</td>
+          </tr>
+          <tr>
+            <td><code>app/core/database.py</code></td>
+            <td>Database Core</td>
+            <td>Instanciação do AsyncEngine SQLAlchemy, AsyncSessionLocal para injeção de dependência no FastAPI e definição da Base declarativa.</td>
+          </tr>
+          <tr>
+            <td><code>app/models/task.py</code></td>
+            <td>ORM Model</td>
+            <td>Mapeamento ORM da tabela <code>tasks</code> no PostgreSQL com UUID primário, campos JSONB e timestamps timezone-aware.</td>
+          </tr>
+          <tr>
+            <td><code>alembic/versions/001_create_tasks_table.py</code></td>
+            <td>Migrations</td>
+            <td>Migração DDL inicial do Alembic criando a tabela <code>tasks</code> e seus índices compostos.</td>
+          </tr>
+          <tr>
+            <td><code>docker-compose.yml</code></td>
+            <td>Orquestração</td>
+            <td>Definição multi-container dos serviços <code>api</code>, <code>worker</code>, <code>db</code> (PostgreSQL 16) e <code>redis</code> com healthchecks.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <p>Reversa Docs — Documentação do Sistema.</p>
+  </footer>
+</body>
+</html>

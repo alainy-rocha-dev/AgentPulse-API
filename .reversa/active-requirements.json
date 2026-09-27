@@ -1,0 +1,16 @@
+{
+  "schema-version": 1,
+  "feature-dir": "_reversa_forward/004-postgres-persistence-container",
+  "feature-id": "004",
+  "short-name": "postgres-persistence-container",
+  "started-at": "2026-09-27T11:59:20-03:00",
+  "current-stage": "done",
+  "stages-completed": [
+    "requirements",
+    "plan",
+    "to-do",
+    "coding",
+    "sync"
+  ],
+  "paused-features": []
+}
