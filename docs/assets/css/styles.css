@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Outfit:wght@500;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+:root {
+  --bg-dark: #040711;
+  --bg-card: rgba(10, 16, 32, 0.75);
+  --bg-card-hover: rgba(18, 28, 54, 0.88);
+  --border-color: rgba(0, 243, 255, 0.22);
+  --border-hover: rgba(255, 0, 127, 0.65);
+  --primary: #00f3ff;
+  --primary-glow: rgba(0, 243, 255, 0.4);
+  --primary-light: #70f3ff;
+  --accent: #ff007f;
+  --accent-glow: rgba(255, 0, 127, 0.4);
+  --secondary: #00ff9d;
+  --purple-glow: #8a2be2;
+  --text-main: #f0f6fc;
+  --text-muted: #94a3b8;
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading: 'Outfit', 'Inter', sans-serif;
+  --font-code: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--bg-dark);
+  background-image: 
+    linear-gradient(to right, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(ellipse at 20% 0%, rgba(112, 0, 255, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(255, 0, 127, 0.15) 0%, transparent 60%);
+  background-size: 40px 40px, 40px 40px, 100% 100%, 100% 100%;
+  background-attachment: fixed;
+  color: var(--text-main);
+  font-family: var(--font-family);
+  line-height: 1.7;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle Scanline Overlay for Cyber Vibe */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  background-size: 100% 4px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+/* App Shell Layout (Sidebar + Main Workspace) */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar Styling */
+aside.app-sidebar {
+  width: 290px;
+  background: rgba(6, 10, 22, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem 1.25rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 110;
+  box-shadow: 5px 0 25px rgba(0, 0, 0, 0.7);
+  flex-shrink: 0;
+}
+
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-family: var(--font-heading);
+  font-weight: 900;
+  font-size: 1.35rem;
+  background: linear-gradient(135deg, #00f3ff 0%, #ff007f 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-decoration: none;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.15);
+}
+
+.sidebar-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
+  padding: 0.4rem 0.8rem;
+  background: rgba(0, 255, 157, 0.08);
+  border: 1px solid rgba(0, 255, 157, 0.25);
+  border-radius: 6px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--secondary);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--secondary);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.4; transform: scale(0.9); }
+}
+
+nav.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+nav.sidebar-nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 0.8rem 1.1rem;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  border: 1px solid transparent;
+}
+
+nav.sidebar-nav a:hover {
+  color: var(--primary);
+  background: rgba(0, 243, 255, 0.08);
+  border-color: rgba(0, 243, 255, 0.25);
+  transform: translateX(4px);
+}
+
+nav.sidebar-nav a[aria-current="page"] {
+  color: #ffffff;
+  background: linear-gradient(135deg, rgba(0, 243, 255, 0.25), rgba(255, 0, 127, 0.2));
+  border-color: var(--primary);
+  box-shadow: 0 0 18px rgba(0, 243, 255, 0.3);
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(0, 243, 255, 0.15);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* App Main Content Area */
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+/* Header Bar inside App Content */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2.5rem;
+  background: rgba(4, 7, 17, 0.7);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.breadcrumb {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.breadcrumb span.active {
+  color: var(--primary);
+}
+
+/* Asymmetrical Two-Column Workspace */
+.workspace-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 1100px) {
+  .workspace-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hero Asymmetrical Banner */
+.hero-banner {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 2rem;
+  align-items: center;
+  background: radial-gradient(ellipse at top left, rgba(0, 243, 255, 0.15) 0%, rgba(10, 16, 32, 0.85) 75%);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 2.5rem;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 243, 255, 0.12);
+  margin-bottom: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-banner::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 6px; height: 100%;
+  background: linear-gradient(to bottom, #00f3ff, #ff007f);
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: column;
+  }
+  aside.app-sidebar {
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+  .hero-banner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* Code & Tables */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 18px;
+  border: 1px solid var(--border-color);
+  margin-bottom: 3rem;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  font-size: 1.05rem;
+}
+
+th, td {
+  padding: 1.3rem 1.6rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 243, 255, 0.08);
+}
+
+th {
+  background: rgba(0, 243, 255, 0.12);
+  color: #70f3ff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+tr:hover td {
+  background: rgba(0, 243, 255, 0.06);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+pre, code {
+  font-family: var(--font-code);
+}
+
+pre {
+  background: #02040a !important;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 2rem;
+  font-size: 1rem !important;
+  line-height: 1.75;
+  color: #70f3ff;
+  box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 243, 255, 0.08);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  background: rgba(4, 7, 17, 0.9);
+  margin-top: auto;
+}
+
+footer code {
+  background: rgba(0, 243, 255, 0.15);
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  color: #70f3ff;
+  border: 1px solid rgba(0, 243, 255, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+  
+  header.app-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  main.container {
+    padding: 2rem 1rem;
+  }
+}
+

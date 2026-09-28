@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="reversa-category" content="feature">
+  <meta name="reversa-producer-agent" content="reversa-docs-storyteller">
+  <title>F002: AI Orchestrator - AgentPulse API Docs</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR HUD -->
+    <aside class="app-sidebar">
+      <a href="../index.html" class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="16" fill="#040711" stroke="#00f3ff" stroke-width="2"/><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="none" stroke="#00f3ff" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="#ff007f"/></svg>
+        <span>AgentPulse API</span>
+      </a>
+
+      <div class="sidebar-status">
+        <span class="status-dot"></span>
+        <span>Sistema Online & Verificado</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="../index.html">
+          <span>⚡</span> Visão Geral & Dashboard
+        </a>
+        <a href="../arquitetura.html">
+          <span>🏛️</span> Arquitetura 3D
+        </a>
+        <a href="../modulos.html">
+          <span>🧩</span> Mapa de Módulos
+        </a>
+        <a href="../metricas.html">
+          <span>📊</span> Métricas & Cobertura
+        </a>
+        <a href="../glossario.html">
+          <span>📖</span> Glossário Técnico
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p><strong>100% Cobertura</strong> (17/17 Testes)</p>
+        <p style="font-size: 0.75rem; margin-top: 0.3rem;">Status: <span style="color: var(--secondary); font-weight:800;">PASCOU</span></p>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT WORKSPACE -->
+    <div class="app-content">
+      <header class="top-bar">
+        <div class="breadcrumb">
+          <span>AgentPulse</span> / <span>Features</span> / <span class="active">F002: AI Orchestrator</span>
+        </div>
+      </header>
+
+      <main style="padding: 2.5rem; max-width: 1400px; width: 100%;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Feature 002: AI Orchestrator & Repair Loop</h1>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Orquestração de agentes de IA com validação de esquema Pydantic e loop de reparo anti-alucinação de 3 tentativas.</p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+          <div class="card">
+            <h3>🤖 Validação Pydantic</h3>
+            <p>Garantia de tipo em todas as entradas e saídas do LLM. Se a resposta contiver um JSON malformado, o validador captura os erros específicos.</p>
+          </div>
+
+          <div class="card">
+            <h3>🔄 Loop de Reparo Anti-Alucinação</h3>
+            <p>O <code>RepairLoopService</code> realiza até 3 re-tentativas enviando o traceback de erro de volta ao modelo para auto-correção sem interromper o fluxo.</p>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>AgentPulse API Docs — Feature 002</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

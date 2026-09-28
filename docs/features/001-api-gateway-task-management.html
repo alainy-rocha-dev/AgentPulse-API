@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="reversa-category" content="feature">
+  <meta name="reversa-producer-agent" content="reversa-docs-storyteller">
+  <title>F001: API Gateway - AgentPulse API Docs</title>
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR HUD -->
+    <aside class="app-sidebar">
+      <a href="../index.html" class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="16" fill="#040711" stroke="#00f3ff" stroke-width="2"/><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="none" stroke="#00f3ff" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="#ff007f"/></svg>
+        <span>AgentPulse API</span>
+      </a>
+
+      <div class="sidebar-status">
+        <span class="status-dot"></span>
+        <span>Sistema Online & Verificado</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="../index.html">
+          <span>⚡</span> Visão Geral & Dashboard
+        </a>
+        <a href="../arquitetura.html">
+          <span>🏛️</span> Arquitetura 3D
+        </a>
+        <a href="../modulos.html">
+          <span>🧩</span> Mapa de Módulos
+        </a>
+        <a href="../metricas.html">
+          <span>📊</span> Métricas & Cobertura
+        </a>
+        <a href="../glossario.html">
+          <span>📖</span> Glossário Técnico
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p><strong>100% Cobertura</strong> (17/17 Testes)</p>
+        <p style="font-size: 0.75rem; margin-top: 0.3rem;">Status: <span style="color: var(--secondary); font-weight:800;">PASCOU</span></p>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT WORKSPACE -->
+    <div class="app-content">
+      <header class="top-bar">
+        <div class="breadcrumb">
+          <span>AgentPulse</span> / <span>Features</span> / <span class="active">F001: API Gateway</span>
+        </div>
+      </header>
+
+      <main style="padding: 2.5rem; max-width: 1400px; width: 100%;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Feature 001: API Gateway & Gerenciamento de Tarefas</h1>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Entrega da porta de entrada HTTP FastAPI com validação de payload Pydantic e respostas assíncronas 202 Accepted.</p>
+
+        <div class="card" style="margin-bottom: 2rem;">
+          <h3>Objetivo da Feature</h3>
+          <p>Prover uma API HTTP de alta performance para submissão de tarefas de IA de longa duração, retornando resposta imediata com ID de acompanhamento para evitar timeouts do cliente.</p>
+        </div>
+
+        <h2 style="font-size: 1.6rem; margin-bottom: 1.25rem;">Endpoints Implementados</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Método</th>
+                <th>Rota</th>
+                <th>Status HTTP</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>POST</code></td>
+                <td><code>/api/v1/tasks</code></td>
+                <td><code>202 Accepted</code></td>
+                <td>Recebe o tipo da tarefa e o payload JSON. Retorna <code>task_id</code> e status <code>queued</code>. Valida tamanho máximo de 10 MB (HTTP 413).</td>
+              </tr>
+              <tr>
+                <td><code>GET</code></td>
+                <td><code>/api/v1/tasks/{task_id}</code></td>
+                <td><code>200 OK / 404</code></td>
+                <td>Retorna o estado atual da tarefa (<code>queued</code>, <code>running</code>, <code>completed</code>, <code>failed</code>) e os resultados estruturados.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <footer>
+        <p>AgentPulse API Docs — Feature 001</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

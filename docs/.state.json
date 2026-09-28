@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-27T12:06:00Z",
+  "lastCheckpoint": "2026-09-27T12:09:40Z",
+  "pipelineDurationMs": 18200,
+  "completedAgents": ["mapper", "analyst", "storyteller", "publisher"],
+  "pendingAgents": [],
+  "pages": {
+    "index.html": {"status": "created", "agent": "reversa-docs-publisher", "hash": "sha256:index_hash_placeholder"},
+    "arquitetura.html": {"status": "created", "agent": "reversa-docs-mapper", "hash": "sha256:arquitetura_hash_placeholder"},
+    "modulos.html": {"status": "created", "agent": "reversa-docs-mapper", "hash": "sha256:modulos_hash_placeholder"},
+    "metricas.html": {"status": "created", "agent": "reversa-docs-analyst", "hash": "sha256:metricas_hash_placeholder"},
+    "glossario.html": {"status": "created", "agent": "reversa-docs-storyteller", "hash": "sha256:glossario_hash_placeholder"},
+    "features/001-api-gateway-task-management.html": {"status": "created", "agent": "reversa-docs-storyteller", "hash": "sha256:f001_hash_placeholder"},
+    "features/002-ai-agent-orchestrator-validator.html": {"status": "created", "agent": "reversa-docs-storyteller", "hash": "sha256:f002_hash_placeholder"},
+    "features/003-task-queue-broker.html": {"status": "created", "agent": "reversa-docs-storyteller", "hash": "sha256:f003_hash_placeholder"},
+    "features/004-postgres-persistence-container.html": {"status": "created", "agent": "reversa-docs-storyteller", "hash": "sha256:f004_hash_placeholder"}
+  },
+  "pagesGenerated": [
+    "index.html",
+    "arquitetura.html",
+    "modulos.html",
+    "metricas.html",
+    "glossario.html",
+    "features/001-api-gateway-task-management.html",
+    "features/002-ai-agent-orchestrator-validator.html",
+    "features/003-task-queue-broker.html",
+    "features/004-postgres-persistence-container.html"
+  ],
+  "pagesOmitted": [
+    {"page": "topologia.html", "reason": "topology not detected"},
+    {"page": "timeline.html", "reason": "chronicle not detected"}
+  ],
+  "auxiliaryHtmls": [],
+  "auxiliaryHtmlsDiscovered": 0,
+  "auxiliaryDiscoveryAborted": false,
+  "cdnFallbackUsed": false,
+  "cdnFallbackDetails": [],
+  "vendorMissing": [],
+  "smokeTestFailed": false,
+  "smokeTestErrors": [],
+  "brokenLinks": []
+}

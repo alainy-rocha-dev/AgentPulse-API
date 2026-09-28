@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="reversa-category" content="index">
+  <meta name="reversa-producer-agent" content="reversa-docs-publisher">
+  <title>AgentPulse API — Dashboard & Documentação Visual</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/data.js"></script>
+  <style>
+    .metrics-panel {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .metrics-panel {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .metrics-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .metric-box {
+      background: linear-gradient(145deg, rgba(10, 16, 32, 0.95), rgba(20, 30, 58, 0.85));
+      border: 1px solid rgba(0, 243, 255, 0.22);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .metric-box::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #00f3ff, #ff007f, #00ff9d);
+      opacity: 0.8;
+    }
+
+    .metric-box:hover {
+      border-color: rgba(0, 243, 255, 0.6);
+      box-shadow: 0 15px 40px rgba(0, 243, 255, 0.15), 0 0 30px rgba(0, 243, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .metric-value {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00f3ff 0%, #ff007f 50%, #00ff9d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .badge-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 1.5rem;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      border-radius: 100px;
+      border: 1px solid var(--border-color);
+      background: rgba(10, 16, 32, 0.8);
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .badge:hover {
+      border-color: var(--primary);
+      background: rgba(0, 243, 255, 0.15);
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(10, 16, 32, 0.95), rgba(20, 30, 58, 0.85));
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #00f3ff, #ff007f, #00ff9d);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 243, 255, 0.6);
+      box-shadow: 0 15px 40px rgba(0, 243, 255, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+    }
+
+    .card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+      color: #ffffff;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1100px) {
+      .workspace-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-banner {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 2rem;
+      align-items: center;
+      background: radial-gradient(ellipse at top left, rgba(0, 243, 255, 0.15) 0%, rgba(10, 16, 32, 0.85) 75%);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      padding: 2.5rem;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px rgba(0, 243, 255, 0.12);
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 6px; height: 100%;
+      background: linear-gradient(to bottom, #00f3ff, #ff007f);
+    }
+
+    @media (max-width: 768px) {
+      .hero-banner {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+      .hero-banner .badge-group {
+        justify-content: center;
+      }
+    }
+
+    .hero-seal {
+      width: 170px !important;
+      height: 170px !important;
+      margin: 0 auto !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR HUD -->
+    <aside class="app-sidebar">
+      <a href="index.html" class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="16" fill="#040711" stroke="#00f3ff" stroke-width="2"/><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="none" stroke="#00f3ff" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="#ff007f"/></svg>
+        <span>AgentPulse API</span>
+      </a>
+
+      <div class="sidebar-status">
+        <span class="status-dot"></span>
+        <span>Sistema Online & Verificado</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <!-- NAV_LINKS -->
+        <a href="index.html" aria-current="page">
+          <span>⚡</span> Visão Geral & Dashboard
+        </a>
+        <a href="arquitetura.html">
+          <span>🏛️</span> Arquitetura 3D
+        </a>
+        <a href="modulos.html">
+          <span>🧩</span> Mapa de Módulos
+        </a>
+        <a href="metricas.html">
+          <span>📊</span> Métricas & Cobertura
+        </a>
+        <a href="glossario.html">
+          <span>📖</span> Glossário Técnico
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p><strong>100% Cobertura</strong> (17/17 Testes)</p>
+        <p style="font-size: 0.75rem; margin-top: 0.3rem;">Status: <span style="color: var(--secondary); font-weight:800;">PASCOU</span></p>
+        <p style="font-size: 0.7rem; margin-top: 0.5rem; color: var(--text-muted);">36 Features • 17 Ações</p>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT WORKSPACE -->
+    <div class="app-content">
+      <!-- TOP BAR -->
+      <header class="top-bar">
+        <div class="breadcrumb">
+          <span>AgentPulse</span> / <span class="active">Visão Geral do Sistema</span>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <span class="badge">v1.0.0</span>
+          <span class="badge" style="border-color: var(--secondary); color: var(--secondary);">Docker Ready</span>
+        </div>
+      </header>
+
+      <main style="padding: 2.5rem; max-width: 1400px; width: 100%;">
+        <!-- HERO ASYMMETRICAL DASHBOARD BANNER -->
+        <section class="hero-banner">
+          <div>
+            <h1 style="font-size: 2.8rem; line-height: 1.15; margin-bottom: 1rem;">
+              API de Automação de Agentes de IA
+            </h1>
+            <p style="font-size: 1.15rem; color: #cbd5e1; margin-bottom: 1.5rem; max-width: 800px; line-height: 1.7;">
+              Orquestrador assíncrono de alto desempenho para execução de tarefas de inteligência artificial com validação estrita Pydantic, mensagens Celery/Redis e persistência PostgreSQL.
+            </p>
+            <div class="badge-group" style="justify-content: flex-start;">
+              <span class="badge">FastAPI Async Gateway</span>
+              <span class="badge">Celery Worker Broker</span>
+              <span class="badge">PostgreSQL & Alembic</span>
+              <span class="badge">Tenacity Retry Policy</span>
+              <span class="badge">Pydantic Repair Loop</span>
+            </div>
+          </div>
+          <div style="text-align: center;">
+            <div class="hero-seal" style="width: 170px; height: 170px; margin: 0 auto;">
+              <img src="assets/img/seal.svg" alt="Selo do Projeto" style="width: 100%; height: 100%;">
+            </div>
+          </div>
+        </section>
+
+        <!-- HUD METRIC DASHBOARD PANEL -->
+        <section class="metrics-panel">
+          <div class="metric-box">
+            <div class="metric-value">36</div>
+            <div class="metric-label">Features Entregues</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">17</div>
+            <div class="metric-label">Ações Concluídas</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Testes Unitários</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Taxa de Sucesso</div>
+          </div>
+        </section>
+
+        <!-- ASYMMETRIC WORKSPACE SPLIT (70% MAIN / 30% SIDE PANEL) -->
+        <div class="workspace-layout">
+          <!-- MAIN AREA (LEFT 70%) -->
+          <div>
+            <h2>Módulos e Artefatos do Sistema</h2>
+            <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+              <a href="arquitetura.html" class="card">
+                <div class="card-icon">🏛️</div>
+                <h3>Arquitetura 3D</h3>
+                <p>Visualização das camadas isoladas HTTP API, Broker Redis, Workers Celery e PostgreSQL.</p>
+              </a>
+
+              <a href="modulos.html" class="card">
+                <div class="card-icon">🧩</div>
+                <h3>Mapa de Módulos</h3>
+                <p>Inventário de arquivos Python, schemas Pydantic, ORM SQLAlchemy e migrações Alembic.</p>
+              </a>
+
+              <a href="metricas.html" class="card">
+                <div class="card-icon">📊</div>
+                <h3>Métricas & Cobertura</h3>
+                <p>Evidências dos 17 testes pytest, garantia de resiliência e tempos de resposta.</p>
+              </a>
+
+              <a href="glossario.html" class="card">
+                <div class="card-icon">📖</div>
+                <h3>Glossário Técnico</h3>
+                <p>Conceitos de Repair Loop Anti-alucinação, HTTP 202 Accepted, Tenacity e Acks Late.</p>
+              </a>
+            </div>
+
+            <h2 style="margin-top: 3rem;">Pipeline de Features Implementadas</h2>
+            <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+              <a href="features/001-api-gateway-task-management.html" class="card" style="flex-direction: row; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                <div class="card-icon" style="margin: 0; width: 54px; height: 54px; font-size: 1.8rem;">⚡</div>
+                <div style="flex: 1;">
+                  <h3 style="font-size: 1.25rem; margin-bottom: 0.2rem;">Feature 001: API Gateway & Task Management</h3>
+                  <p style="margin: 0; font-size: 0.95rem;">Endpoints POST /tasks (HTTP 202) e GET /tasks/{task_id} com validação Pydantic e limite de 10 MB.</p>
+                </div>
+                <span class="badge" style="margin: 0;">F001</span>
+              </a>
+
+              <a href="features/002-ai-agent-orchestrator-validator.html" class="card" style="flex-direction: row; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                <div class="card-icon" style="margin: 0; width: 54px; height: 54px; font-size: 1.8rem;">🤖</div>
+                <div style="flex: 1;">
+                  <h3 style="font-size: 1.25rem; margin-bottom: 0.2rem;">Feature 002: AI Orchestrator & Validator</h3>
+                  <p style="margin: 0; font-size: 0.95rem;">Orquestração de agentes de IA com validação de esquema Pydantic e loop de reparo anti-alucinação de 3 tentativas.</p>
+                </div>
+                <span class="badge" style="margin: 0;">F002</span>
+              </a>
+
+              <a href="features/003-task-queue-broker.html" class="card" style="flex-direction: row; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                <div class="card-icon" style="margin: 0; width: 54px; height: 54px; font-size: 1.8rem;">🔄</div>
+                <div style="flex: 1;">
+                  <h3 style="font-size: 1.25rem; margin-bottom: 0.2rem;">Feature 003: Task Queue Broker & Celery</h3>
+                  <p style="margin: 0; font-size: 0.95rem;">Mensageria com Redis e Workers Celery, acks late, limite de tempo e retentativas exponenciais via Tenacity.</p>
+                </div>
+                <span class="badge" style="margin: 0;">F003</span>
+              </a>
+
+              <a href="features/004-postgres-persistence-container.html" class="card" style="flex-direction: row; align-items: center; gap: 1.5rem; padding: 1.5rem;">
+                <div class="card-icon" style="margin: 0; width: 54px; height: 54px; font-size: 1.8rem;">🐘</div>
+                <div style="flex: 1;">
+                  <h3 style="font-size: 1.25rem; margin-bottom: 0.2rem;">Feature 004: PostgreSQL & Docker Compose</h3>
+                  <p style="margin: 0; font-size: 0.95rem;">Persistência relacional via SQLAlchemy, migrações assíncronas Alembic e orquestração Docker Compose com healthchecks.</p>
+                </div>
+                <span class="badge" style="margin: 0;">F004</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- TACTICAL RIGHT SIDEBAR (30%) -->
+          <div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 20px; padding: 1.75rem; margin-bottom: 2rem;">
+              <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: var(--primary);">🛠️ Tech Stack Matrix</h3>
+              <div style="display: flex; flex-direction: column; gap: 0.75rem; font-size: 0.95rem;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+                  <span style="color: var(--text-muted);">Framework HTTP</span>
+                  <strong style="color: #ffffff;">FastAPI</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+                  <span style="color: var(--text-muted);">Broker Fila</span>
+                  <strong style="color: #ffffff;">Redis 7</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+                  <span style="color: var(--text-muted);">Worker Engine</span>
+                  <strong style="color: #ffffff;">Celery 5</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5rem;">
+                  <span style="color: var(--text-muted);">Database</span>
+                  <strong style="color: #ffffff;">PostgreSQL 16</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; padding-bottom: 0.2rem;">
+                  <span style="color: var(--text-muted);">ORM / Migrations</span>
+                  <strong style="color: #ffffff;">SQLAlchemy / Alembic</strong>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: linear-gradient(145deg, rgba(10, 16, 32, 0.95), rgba(20, 30, 58, 0.85)); border: 1px solid rgba(0, 255, 157, 0.3); border-radius: 20px; padding: 1.75rem;">
+              <h3 style="font-size: 1.2rem; margin-bottom: 0.75rem; color: var(--secondary);">✅ Relatório de Verificação</h3>
+              <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 1rem;">
+                Todos os 17 testes de unidade e integração foram executados e validados pelo pipeline de qualidade Reversa.
+              </p>
+              <div style="background: rgba(0,0,0,0.4); border-radius: 10px; padding: 0.85rem; font-family: var(--font-code); font-size: 0.85rem; color: var(--secondary);">
+                > pytest tests/<br>
+                > 17 passed in 0.55s<br>
+                > Status: PASCOU [100%]
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>Mini-site gerado pelo <strong>AgentPulse API Docs</strong>. Preservado em <code>_reversa_docs/index.html</code>.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

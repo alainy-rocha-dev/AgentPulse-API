@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="reversa-category" content="glossary">
+  <meta name="reversa-producer-agent" content="reversa-docs-storyteller">
+  <title>Glossário Técnico - AgentPulse API Docs</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script src="assets/js/data.js"></script>
+</head>
+<body>
+  <div class="app-layout">
+    <!-- LEFT SIDEBAR HUD -->
+    <aside class="app-sidebar">
+      <a href="index.html" class="sidebar-brand">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32"><rect width="64" height="64" rx="16" fill="#040711" stroke="#00f3ff" stroke-width="2"/><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="none" stroke="#00f3ff" stroke-width="4"/><circle cx="32" cy="32" r="8" fill="#ff007f"/></svg>
+        <span>AgentPulse API</span>
+      </a>
+
+      <div class="sidebar-status">
+        <span class="status-dot"></span>
+        <span>Sistema Online & Verificado</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="index.html">
+          <span>⚡</span> Visão Geral & Dashboard
+        </a>
+        <a href="arquitetura.html">
+          <span>🏛️</span> Arquitetura 3D
+        </a>
+        <a href="modulos.html">
+          <span>🧩</span> Mapa de Módulos
+        </a>
+        <a href="metricas.html">
+          <span>📊</span> Métricas & Cobertura
+        </a>
+        <a href="glossario.html" aria-current="page">
+          <span>📖</span> Glossário Técnico
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p><strong>100% Cobertura</strong> (17/17 Testes)</p>
+        <p style="font-size: 0.75rem; margin-top: 0.3rem;">Status: <span style="color: var(--secondary); font-weight:800;">PASCOU</span></p>
+      </div>
+    </aside>
+
+    <!-- RIGHT MAIN CONTENT WORKSPACE -->
+    <div class="app-content">
+      <header class="top-bar">
+        <div class="breadcrumb">
+          <span>AgentPulse</span> / <span class="active">Glossário Técnico</span>
+        </div>
+      </header>
+
+      <main style="padding: 2.5rem; max-width: 1400px; width: 100%;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Glossário de Termos e Conceitos Técnicos</h1>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Definição de padrões de arquitetura, ferramentas e conceitos utilizados no projeto.</p>
+
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.75rem;">
+          <div class="card">
+            <h3>⚡ HTTP 202 Accepted</h3>
+            <p>Código de status HTTP indicando que a requisição foi aceita para processamento assíncrono, mas a execução ainda não foi concluída. Devolve um <code>task_id</code> para acompanhamento.</p>
+          </div>
+
+          <div class="card">
+            <h3>🤖 Repair Loop (Loop de Reparo)</h3>
+            <p>Mecanismo anti-alucinação onde erros de validação sintática do Pydantic são enviados de volta ao modelo de linguagem (LLM) para corrigir o formato JSON sem falhar a requisição.</p>
+          </div>
+
+          <div class="card">
+            <h3>🔄 Acks Late (Celery)</h3>
+            <p>Configuração do Celery em que a confirmação da tarefa só é enviada ao Redis após a conclusão com sucesso da execução, prevenindo perda de tarefas se o worker cair.</p>
+          </div>
+
+          <div class="card">
+            <h3>🛡️ Tenacity</h3>
+            <p>Biblioteca de retentativas em Python com política de backoff exponencial utilizada para garantir que operações no banco PostgreSQL sobrevivam a pequenas instabilidades de rede.</p>
+          </div>
+
+          <div class="card">
+            <h3>🐘 Alembic</h3>
+            <p>Ferramenta de migração de banco de dados para SQLAlchemy. Permite controle de versão evolutivo de schemas relacionais PostgreSQL.</p>
+          </div>
+
+          <div class="card">
+            <h3>🐳 pg_isready</h3>
+            <p>Utilitário do PostgreSQL usado pelo Docker Compose no <code>healthcheck</code> para verificar se o banco de dados está pronto para receber conexões antes de liberar o startup da API e Worker.</p>
+          </div>
+        </div>
+      </main>
+
+      <footer>
+        <p>AgentPulse API Docs — Glossário Técnico.</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
