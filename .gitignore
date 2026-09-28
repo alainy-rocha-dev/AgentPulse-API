@@ -35,3 +35,7 @@ WhatsApp Image 2026-09-21 at 16.36.11.jpeg
 Relatorio_Portfolio_Agentes_IA.pdf
 *.pdf
 
+# Scripts locais e temporarios
+generate_resume_pdf.py
+test_script.py
+
