@@ -9,7 +9,7 @@
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-336791.svg)](https://www.postgresql.org/)
 [![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Ready-2496ED.svg)](https://www.docker.com/)
 
-**AgentPulse API** é um motor assíncrono de alta performance projetado para executar cadeias de agentes autônomos de Inteligência Artificial (ex: análise de contratos complexos, automação de marketing e processamento multimodal). 
+**AgentPulse API** é um motor assíncrono projetado para executar cadeias de agentes autônomos de Inteligência Artificial (ex: análise de contratos complexos, automação de marketing e processamento multimodal). 
 
 A plataforma resolve o desafio de **timeouts HTTP em tarefas de longa duração** ao retornar uma resposta imediata (`202 Accepted`) com monitoramento de status, desacoplando o processamento pesado via **Celery + Redis** e garantindo determinismo em saídas de LLMs através de um **Repair Loop com Pydantic**.
 
@@ -40,10 +40,10 @@ flowchart TD
 
 - **⚡ Processamento Assíncrono Desacoplado**: Resposta HTTP imediata (`202 Accepted`) eliminando risco de timeout em conexões de longa duração.
 - **🔄 Auto-Recuperação Anti-Alucinação (Repair Loop)**: Loop de retentativas inteligentes para corrigir JSONs mal-formados ou não-conformes gerados por LLMs.
-- **📦 Fila Concorrente de Altura Escala**: Gerenciamento de tarefas em segundo plano impulsionado por **Celery** e **Redis**.
+- **📦 Fila Concorrente de Alta Escala**: Gerenciamento de tarefas em segundo plano impulsionado por **Celery** e **Redis**.
 - **💾 Persistência Confiável**: Histórico completo de execução e payload de resultados armazenados em **PostgreSQL**.
 - **🐳 Containerização 100% Reprodutível**: Toda a stack pronta para execução via **Docker Compose**.
-- **🧪 Cobertura Total de Testes**: Suíte de testes automatizados integrando API, Workers, Banco de Dados e validações com **Pytest**.
+- **🧪 Testes Automatizados**: Suíte de testes integrando API, Workers, Banco de Dados e validações com **Pytest**.
 
 ---
 
