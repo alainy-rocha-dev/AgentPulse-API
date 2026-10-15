@@ -13,7 +13,7 @@ window.RV_DATA = {
     {"id": "index", "href": "index.html", "label": "Visão Geral"},
     {"id": "arquitetura", "href": "arquitetura.html", "label": "Arquitetura 3D"},
     {"id": "modulos", "href": "modulos.html", "label": "Mapa de Módulos"},
-    {"id": "metricas", "href": "metricas.html", "label": "Métricas & Cobertura"},
+    {"id": "metricas", "href": "metricas.html", "label": "Métricas & Testes"},
     {"id": "glossario", "href": "glossario.html", "label": "Glossário"},
     {"id": "f001", "href": "features/001-api-gateway-task-management.html", "label": "F001: API Gateway"},
     {"id": "f002", "href": "features/002-ai-agent-orchestrator-validator.html", "label": "F002: AI Orchestrator"},
