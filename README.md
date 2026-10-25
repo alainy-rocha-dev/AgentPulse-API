@@ -1,111 +1,123 @@
-# ⚡ AgentPulse API
 
-> **Asynchronous AI Agent Orchestration & Validation Engine**
+⚡ AgentPulse API
 
-[![Python Version](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![Celery](https://img.shields.io/badge/Celery-5.3%2B-green.svg)](https://docs.celeryq.dev/)
-[![Redis](https://img.shields.io/badge/Redis-5.0%2B-red.svg)](https://redis.io/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15%2B-336791.svg)](https://www.postgresql.org/)
-[![Docker Compose](https://img.shields.io/badge/Docker%20Compose-Ready-2496ED.svg)](https://www.docker.com/)
+Asynchronous AI agent orchestration with validated LLM output
 
-**AgentPulse API** é um motor assíncrono projetado para executar cadeias de agentes autônomos de Inteligência Artificial (ex: análise de contratos complexos, automação de marketing e processamento multimodal). 
+Python FastAPI Celery Redis PostgreSQL Docker Compose
 
-A plataforma resolve o desafio de **timeouts HTTP em tarefas de longa duração** ao retornar uma resposta imediata (`202 Accepted`) com monitoramento de status, desacoplando o processamento pesado via **Celery + Redis** e garantindo determinismo em saídas de LLMs através de um **Repair Loop com Pydantic**.
+AgentPulse is a backend for running long AI agent tasks without HTTP timeouts. A request returns immediately with 202 Accepted and a task_id; the work runs in a Celery + Redis worker; the result is stored in PostgreSQL and fetched later by ID.
 
----
+Its core feature is a Pydantic repair loop: when the LLM returns malformed or incomplete JSON, the validation error is sent back to the model so it can fix its own output — up to a fixed number of attempts. Numbers are computed by deterministic Python tools, not by the LLM.
 
-## 🏛️ Arquitetura da Solução
+It is also the execution layer of FinAgent.
 
-```mermaid
-flowchart TD
-    Client([Cliente / Frontend]) -->|1. POST /api/v1/tasks| API[FastAPI Gateway]
-    API -->|2. Retorna 202 Accepted + task_id| Client
-    API -->|3. Enfileira Tarefa| Redis[(Redis Broker)]
-    
-    subgraph Background Processing
-        Redis -->|4. Consome Fila| Worker[Worker Celery]
-        Worker -->|5. Executa Agente IA| AgentEngine[Agent Orchestrator]
-        AgentEngine -->|6. Valida Schema / Repair Loop| PydanticValidator[Pydantic Schema Validator]
-    end
-    
-    Worker -->|7. Persiste Estado & Resultado| Postgres[(PostgreSQL DB)]
-    Client -.->|"8. GET /api/v1/tasks/{task_id}"| API
-    API -.->|9. Consulta Resultado| Postgres
-```
+Architecture
+Background processing
+1. POST /api/v1/tasks
+2. 202 Accepted + task_id
+3. enqueue
+4. consume
+5. deterministic tools
+6. LLM call
+7. validate / repair
+8. save status + result
+9. GET/api/v1/tasks/{task_id}
+Client
+FastAPI
+Redis broker
+Celery worker
+Risk score calculator
+Agent orchestrator
+Pydantic repair loop
+PostgreSQL
+The repair loop in action
 
----
+The LLM must return JSON matching this schema:
 
-## ✨ Principais Funcionalidades
+python
+class AnalysisOutputSchema(BaseModel):
+    summary: str
+    key_findings: list[str]
+    metrics: MetricsSchema      # total_score, risk_level, calculated_items
+    metadata: MetadataSchema    # repair_attempts, execution_time_seconds, model_used
 
-- **⚡ Processamento Assíncrono Desacoplado**: Resposta HTTP imediata (`202 Accepted`) eliminando risco de timeout em conexões de longa duração.
-- **🔄 Auto-Recuperação Anti-Alucinação (Repair Loop)**: Loop de retentativas inteligentes para corrigir JSONs mal-formados ou não-conformes gerados por LLMs.
-- **📦 Fila Concorrente de Alta Escala**: Gerenciamento de tarefas em segundo plano impulsionado por **Celery** e **Redis**.
-- **💾 Persistência Confiável**: Histórico completo de execução e payload de resultados armazenados em **PostgreSQL**.
-- **🐳 Containerização 100% Reprodutível**: Toda a stack pronta para execução via **Docker Compose**.
-- **🧪 Testes Automatizados**: Suíte de testes integrando API, Workers, Banco de Dados e validações com **Pytest**.
+Attempt 1 — the model forgets a required field:
 
----
+json
+{"summary": "Missing metrics"}
 
-## 🚀 Como Executar
+Pydantic rejects it (metrics: Field required). The loop re-prompts the model with the original prompt plus the exact validation error, asking for valid JSON only.
 
-### Pré-requisitos
-- [Docker](https://www.docker.com/) & [Docker Compose](https://docs.docker.com/compose/)
-- Python 3.11+ (opcional para desenvolvimento local)
+Attempt 2 — corrected output, accepted:
 
-### 1. Clonar o Repositório
-```bash
+json
+{
+  "summary": "Fixed on the 2nd attempt",
+  "key_findings": ["OK"],
+  "metrics": {"total_score": 80.0, "risk_level": "LOW", "calculated_items": 1},
+  "metadata": {"repair_attempts": 1, "execution_time_seconds": 1.0, "model_used": "..."}
+}
+
+If every attempt fails, the task ends with a clear SchemaValidationError instead of saving invalid data. Each LLM call also has its own retry with exponential backoff (tenacity) for transient errors.
+
+(This exact scenario is covered by tests/test_repair_loop.py.)
+
+API
+Method	Endpoint	Description	Status
+POST	/api/v1/tasks	Submit a task for asynchronous execution	202 Accepted
+GET	/api/v1/tasks/{task_id}	Get status (queued, processing, completed, failed) and result	200 OK
+GET	/	Health check (service status and version)	200 OK
+
+Example request:
+
+bash
+curl -X POST http://localhost:8000/api/v1/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"task_type": "contract_analysis", "payload": {"items": [{"issue": "No late-payment penalty", "severity": "HIGH"}]}}'
+json
+{"task_id": "…", "status": "queued", "message": "Tarefa recebida e enfileirada com sucesso."}
+
+Requests larger than 10 MB are rejected with 413.
+
+Running
+
+Requirements: Docker and Docker Compose.
+
+bash
 git clone https://github.com/alainy-rocha-dev/AgentPulse-API.git
 cd AgentPulse-API
-```
+# create a .env file (see below)
+docker-compose up --build
 
-### 2. Configurar Variáveis de Ambiente
-Crie um arquivo `.env` baseado nas configurações padrão:
-```bash
+API at http://localhost:8000 · interactive docs (Swagger) at http://localhost:8000/docs
+
+.env example:
+
+bash
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
 POSTGRES_DB=agent_pulse_db
 POSTGRES_HOST=postgres
 POSTGRES_PORT=5432
-
 REDIS_HOST=redis
 REDIS_PORT=6379
-
 CELERY_BROKER_URL=redis://redis:6379/0
 CELERY_RESULT_BACKEND=redis://redis:6379/0
-
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/agent_pulse_db
-```
-
-### 3. Subir a Stack via Docker Compose
-```bash
-docker-compose up --build
-```
-A API estará acessível em: `http://localhost:8000`  
-Documentação Interativa (Swagger/OpenAPI): `http://localhost:8000/docs`
-
----
-
-## 🧪 Executando os Testes
-
-Para executar a suíte completa de testes unitários e de integração:
-
-```bash
+Tests
+bash
 python -m pytest
-```
 
----
+17 tests covering the API endpoints, Celery configuration, database, schemas and deterministic tools, the repair loop (success on 1st attempt, success after repair, exhaustion) and worker–orchestrator integration.
 
-## 📌 Referência da API (Endpoints)
+Known limitations
+No real LLM is wired by default. The orchestrator accepts any LLM as a plain function (prompt -> str); without one, it uses a built-in stub that returns valid JSON. Connecting a provider (OpenAI, Groq, a local model…) is a one-function change.
+The deterministic tool is a simple risk score over items with severity labels — a demonstration of keeping arithmetic out of the LLM, not a domain model.
+Throughput and scaling have not been benchmarked.
+Tech stack
 
-| Método | Endpoint | Descrição | Status Code |
-|---|---|---|---|
-| `POST` | `/api/v1/tasks` | Submete uma nova tarefa para execução assíncrona | `202 Accepted` |
-| `GET` | `/api/v1/tasks/{task_id}` | Consulta o status e o resultado final da tarefa | `200 OK` |
-| `GET` | `/health` | Verificação de integridade dos serviços | `200 OK` |
+Python 3.11 · FastAPI · Celery · Redis · PostgreSQL (SQLAlchemy async, Alembic) · Pydantic · tenacity · Docker Compose · pytest
 
----
+License
 
-## 🛡️ Licença
-
-Este projeto está sob a licença [MIT](LICENSE).
+MIT
