@@ -11,7 +11,9 @@
 
 AgentPulse is a backend for running **long AI agent tasks** without HTTP timeouts. A request returns immediately with `202 Accepted` and a `task_id`; the work runs in a **Celery + Redis** worker; the result is stored in **PostgreSQL** and fetched later by ID.
 
-Its core feature is a **Pydantic repair loop**: when the LLM returns malformed or incomplete JSON, the validation error is sent back to the model so it can fix its own output — up to a fixed number of attempts. Numbers are computed by **deterministic Python tools**, not by the LLM.
+Its core feature is a **Pydantic repair loop**: when the LLM returns malformed or incomplete JSON, the validation error is sent back to the model so it can fix its own output — up to a fixed number of attempts. Numbers are computed by **deterministic Python tools**, not by the LLM — and any answer in which the LLM changed them is rejected and repaired like a schema error.
+
+It runs with a real LLM (Groq or OpenAI, one environment variable) or, without a key, with a built-in stub.
 
 It is also the execution layer of [FinAgent](https://github.com/alainy-rocha-dev/FinAgent).
 
@@ -72,6 +74,19 @@ If every attempt fails, the task ends with a clear `SchemaValidationError` inste
 
 *(This exact scenario is covered by `tests/test_repair_loop.py`.)*
 
+### Numbers the LLM cannot change
+
+The risk score is computed in Python before the LLM is called and goes into the prompt. A valid-looking answer with a different `total_score`, `risk_level` or `calculated_items` is rejected with a `MetricsMismatchError`, and the re-prompt tells the model the exact values it must repeat. If it keeps changing them, the task fails instead of saving them. The `model_used` field is filled with the model that actually answered, not with what the LLM claims.
+
+### Measuring it with a real model
+
+```bash
+export GROQ_API_KEY=...          # or OPENAI_API_KEY (PowerShell: $env:GROQ_API_KEY="...")
+python -m eval.live_repair_eval --runs 3
+```
+
+Runs 8 tasks (contracts, compliance, vendor risk, ticket triage) through the same code the worker uses and reports how many answers passed on the first try, needed the repair loop or failed every attempt, plus the kinds of rejection (invalid JSON, schema error, altered metrics). Results are saved to `eval/results/`.
+
 ## API
 
 | Method | Endpoint | Description | Status |
@@ -101,26 +116,13 @@ Requirements: Docker and Docker Compose.
 ```bash
 git clone https://github.com/alainy-rocha-dev/AgentPulse-API.git
 cd AgentPulse-API
-# create a .env file (see below)
+cp .env.example .env      # optional: add GROQ_API_KEY or OPENAI_API_KEY for a real LLM
 docker-compose up --build
 ```
 
 API at `http://localhost:8000` · interactive docs (Swagger) at `http://localhost:8000/docs`
 
-`.env` example:
-
-```bash
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_DB=agent_pulse_db
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-REDIS_HOST=redis
-REDIS_PORT=6379
-CELERY_BROKER_URL=redis://redis:6379/0
-CELERY_RESULT_BACKEND=redis://redis:6379/0
-DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/agent_pulse_db
-```
+Database and Redis settings are already set in `docker-compose.yml`. The `.env` file only holds the LLM key; without it, the worker uses the stub.
 
 ## Tests
 
@@ -128,17 +130,18 @@ DATABASE_URL=postgresql+asyncpg://postgres:postgres@postgres:5432/agent_pulse_db
 python -m pytest
 ```
 
-17 tests covering the API endpoints, Celery configuration, database, schemas and deterministic tools, the repair loop (success on 1st attempt, success after repair, exhaustion) and worker–orchestrator integration.
+25 tests covering the API endpoints, Celery configuration, database, schemas and deterministic tools, the repair loop (success on 1st attempt, success after repair, exhaustion, altered metrics), the LLM client without network (rate-limit retry, invalid key, network errors) and worker–orchestrator integration.
 
 ## Known limitations
 
-- **No real LLM is wired by default.** The orchestrator accepts any LLM as a plain function (`prompt -> str`); without one, it uses a built-in stub that returns valid JSON. Connecting a provider (OpenAI, Groq, a local model…) is a one-function change.
+- **The LLM is optional.** Without `GROQ_API_KEY` or `OPENAI_API_KEY`, a built-in stub returns valid JSON, so the API and the tests run offline. Any other model can be plugged in as a plain function (`prompt -> str`).
+- **The metrics check is exact.** It protects the deterministic numbers; it does not judge whether the summary and findings written by the LLM are correct.
 - The deterministic tool is a simple risk score over items with severity labels — a demonstration of keeping arithmetic out of the LLM, not a domain model.
 - Throughput and scaling have not been benchmarked.
 
 ## Tech stack
 
-Python 3.11 · FastAPI · Celery · Redis · PostgreSQL (SQLAlchemy async, Alembic) · Pydantic · tenacity · Docker Compose · pytest
+Python 3.11 · FastAPI · Celery · Redis · PostgreSQL (SQLAlchemy async, Alembic) · Pydantic · httpx · tenacity · Groq / OpenAI · Docker Compose · pytest
 
 ## License
 
