@@ -1,0 +1,231 @@
+{
+  "mode": "live",
+  "model": "groq:openai/gpt-oss-120b",
+  "tasks": 8,
+  "runs_per_task": 3,
+  "total": 24,
+  "answered": 24,
+  "first_try": 1.0,
+  "repaired": 0.0,
+  "failed": 0.0,
+  "provider_errors": 0,
+  "rejection_kinds": {},
+  "samples": [
+    {
+      "task_type": "contract_analysis",
+      "items": 1,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.78,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 3,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.9,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 0,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.5,
+      "rejected": []
+    },
+    {
+      "task_type": "compliance_review",
+      "items": 3,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.92,
+      "rejected": []
+    },
+    {
+      "task_type": "compliance_review",
+      "items": 1,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.91,
+      "rejected": []
+    },
+    {
+      "task_type": "vendor_risk",
+      "items": 2,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.65,
+      "rejected": []
+    },
+    {
+      "task_type": "vendor_risk",
+      "items": 4,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.76,
+      "rejected": []
+    },
+    {
+      "task_type": "support_ticket_triage",
+      "items": 2,
+      "run": 1,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.8,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 1,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.75,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 3,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.75,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 0,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.93,
+      "rejected": []
+    },
+    {
+      "task_type": "compliance_review",
+      "items": 3,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.91,
+      "rejected": []
+    },
+    {
+      "task_type": "compliance_review",
+      "items": 1,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.86,
+      "rejected": []
+    },
+    {
+      "task_type": "vendor_risk",
+      "items": 2,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.61,
+      "rejected": []
+    },
+    {
+      "task_type": "vendor_risk",
+      "items": 4,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.79,
+      "rejected": []
+    },
+    {
+      "task_type": "support_ticket_triage",
+      "items": 2,
+      "run": 2,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 1.0,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 1,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.62,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 3,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.65,
+      "rejected": []
+    },
+    {
+      "task_type": "contract_analysis",
+      "items": 0,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.54,
+      "rejected": []
+    },
+    {
+      "task_type": "compliance_review",
+      "items": 3,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.91,
+      "rejected": []
+    },
+    {
+      "task_type": "compliance_review",
+      "items": 1,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.63,
+      "rejected": []
+    },
+    {
+      "task_type": "vendor_risk",
+      "items": 2,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 1.03,
+      "rejected": []
+    },
+    {
+      "task_type": "vendor_risk",
+      "items": 4,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.67,
+      "rejected": []
+    },
+    {
+      "task_type": "support_ticket_triage",
+      "items": 2,
+      "run": 3,
+      "status": "first_try",
+      "attempts": 1,
+      "seconds": 0.82,
+      "rejected": []
+    }
+  ]
+}
