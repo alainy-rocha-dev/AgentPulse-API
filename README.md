@@ -87,6 +87,16 @@ python -m eval.live_repair_eval --runs 3
 
 Runs 8 tasks (contracts, compliance, vendor risk, ticket triage) through the same code the worker uses and reports how many answers passed on the first try, needed the repair loop or failed every attempt, plus the kinds of rejection (invalid JSON, schema error, altered metrics). Results are saved to `eval/results/`.
 
+**Result** — `openai/gpt-oss-120b` on Groq, 8 tasks × 3 runs (`eval/results/repair_live_20261120-182640.json`):
+
+| Outcome | Runs | Rate |
+|---|---|---|
+| Valid on the first try | 24 | 100% |
+| Rejected, then fixed by the repair loop | 0 | 0% |
+| Rejected on every attempt (task failed) | 0 | 0% |
+
+With a strong model and a prompt that carries the schema and the exact metrics, the repair loop was never needed: every answer was valid JSON, matched the schema and repeated the computed numbers unchanged. The loop is a safety net for weaker or cheaper models, providers that wrap JSON in markdown, and prompt changes; its behavior is covered by the tests above.
+
 ## API
 
 | Method | Endpoint | Description | Status |
