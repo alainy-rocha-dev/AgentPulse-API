@@ -8,6 +8,72 @@
   <title>Métricas & Testes - AgentPulse API Docs</title>
   <link rel="stylesheet" href="assets/css/styles.css">
   <script src="assets/js/data.js"></script>
+  <style>
+    .metrics-panel {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .metrics-panel {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 580px) {
+      .metrics-panel {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .metric-box {
+      background: linear-gradient(145deg, rgba(10, 16, 32, 0.95), rgba(20, 30, 58, 0.85));
+      border: 1px solid rgba(0, 243, 255, 0.22);
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .metric-box::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, #00f3ff, #ff007f, #00ff9d);
+      opacity: 0.8;
+    }
+
+    .metric-box:hover {
+      border-color: rgba(0, 243, 255, 0.6);
+      box-shadow: 0 15px 40px rgba(0, 243, 255, 0.15), 0 0 30px rgba(0, 243, 255, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .metric-value {
+      font-family: 'Outfit', 'Inter', sans-serif;
+      font-size: 3.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00f3ff 0%, #ff007f 50%, #00ff9d 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .metric-label {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+  </style>
 </head>
 <body>
   <div class="app-layout">
@@ -42,7 +108,7 @@
       </nav>
 
       <div class="sidebar-footer">
-        <p><strong>17/17 testes passando</strong></p>
+        <p><strong>25/25 testes passando</strong></p>
         <p style="font-size: 0.75rem; margin-top: 0.3rem;">Status: PASSOU</p>
       </div>
     </aside>
@@ -57,24 +123,24 @@
 
       <main style="padding: 2.5rem; max-width: 1400px; width: 100%;">
         <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Métricas de Validação e Qualidade de Código</h1>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">Indicadores de performance, resultados de suíte de testes e resiliência de produção.</p>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Resultados da suíte de testes e da medição com LLM real (Groq, 8 tarefas × 3 execuções por modelo; dados em <a href="https://github.com/alainy-rocha-dev/AgentPulse-API#measuring-it-with-a-real-model" style="color: var(--primary);">eval/results</a>).</p>
 
         <section class="metrics-panel">
           <div class="metric-box">
-            <div class="metric-value">17 / 17</div>
+            <div class="metric-value">25 / 25</div>
             <div class="metric-label">Testes Aprovados</div>
           </div>
           <div class="metric-box">
-            <div class="metric-value">0.55s</div>
-            <div class="metric-label">Tempo de Execução dos Testes</div>
+            <div class="metric-value">24 / 24</div>
+            <div class="metric-label">Válidas de primeira · gpt-oss-120b</div>
           </div>
           <div class="metric-box">
-            <div class="metric-value">&lt; 500ms</div>
-            <div class="metric-label">Latência HTTP POST /tasks</div>
+            <div class="metric-value">24 / 24</div>
+            <div class="metric-label">Válidas de primeira · gpt-oss-20b</div>
           </div>
           <div class="metric-box">
             <div class="metric-value">3</div>
-            <div class="metric-label">Tentativas de Reparo Anti-Alucinação</div>
+            <div class="metric-label">Tentativas máximas do repair loop</div>
           </div>
         </section>
 
@@ -124,6 +190,11 @@
                 <td><code>tests/test_worker_orchestrator_integration.py</code></td>
                 <td>Integração entre Worker Celery, orquestração e persistência.</td>
                 <td>🟢 PASSOU (2/2)</td>
+              </tr>
+              <tr>
+                <td><code>tests/test_llm_client_and_metrics.py</code></td>
+                <td>Cliente do LLM sem rede (limite 429, chave inválida, falha de rede), escolha do provedor pelo ambiente e rejeição de métricas alteradas.</td>
+                <td>🟢 PASSOU (8/8)</td>
               </tr>
             </tbody>
           </table>
